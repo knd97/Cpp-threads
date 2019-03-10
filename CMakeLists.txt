@@ -11,6 +11,7 @@ endif()
 
 set(SOURCES
     src/Ball.cpp
+    src/Screen.cpp
     src/main.cpp
 )
 
