@@ -16,7 +16,6 @@ class Screen
         Screen() = default;
         Screen(int startX, int startY, int width, int height);
 
-
         ~Screen();
 };
 #endif // Screen_h_

@@ -13,8 +13,6 @@ Screen::Screen(int startX, int startY, int width, int height):
     wrefresh(main_window);
 }
 
-
-
 Screen::~Screen()
 {
     endwin();

@@ -16,6 +16,7 @@ class Ball
 
     public:
         Ball(std::pair<int, int>position, std::chrono::milliseconds period);
+        
         ~Ball();
 };
 #endif // Ball_h_
