@@ -5,6 +5,7 @@
 #include <utility>
 #include <thread>
 #include <chrono>
+#include <ncurses.h>
 
 class Ball
 {
@@ -13,9 +14,10 @@ class Ball
         std::thread ball_thread_;
         std::chrono::milliseconds interval_;
         const char ball_symbol_ = 'o';
+        bool stop_thread_;
 
     public:
-        Ball(std::pair<int, int>position, std::chrono::milliseconds period);
+        Ball(WINDOW *window, std::chrono::milliseconds period);
         ~Ball();
 };
 #endif // Ball_h_

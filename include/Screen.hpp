@@ -6,17 +6,17 @@
 class Screen
 {
     private:
-        int startx_;
-        int starty_;
         int width_;
         int height_;
-        WINDOW *main_window;
+        WINDOW *main_window_;
 
     public:
         Screen() = default;
-        Screen(int startX, int startY, int width, int height);
-
+        Screen(int width, int height);
 
         ~Screen();
+    private:
+        int get_center_x();             //center placement of the window
+        int get_center_y();
 };
 #endif // Screen_h_
