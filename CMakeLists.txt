@@ -1,13 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 project(SO_1 VERSION 1.0.0)
 
-find_package(Curses REQUIRED)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
 
-if(Curses_FOUND)
-    message("Curses found")
-else()
-    message(FATAL_ERROR "Cannot find Curses")
-endif()
+find_package(Curses REQUIRED)
+find_package(Threads REQUIRED)
 
 set(SOURCES
     src/Ball.cpp
@@ -16,7 +13,6 @@ set(SOURCES
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
-
 include_directories(${CURSES_INCLUDE_DIRS})
 
 target_include_directories(${PROJECT_NAME}
@@ -25,6 +21,7 @@ target_include_directories(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} Threads::Threads)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_STANDARD 17

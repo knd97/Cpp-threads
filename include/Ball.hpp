@@ -10,14 +10,21 @@
 class Ball
 {
     private:
-        std::pair<int, int>coordinates_;        //(x, y) position of ball
+        std::pair<int, int>coordinates_;                //(x, y) position of ball
         std::thread ball_thread_;
-        std::chrono::milliseconds interval_;
-        const char ball_symbol_ = 'o';
         bool stop_thread_;
+        static std::chrono::milliseconds interval_;
+        static const char * ball_symbol_;
 
     public:
-        Ball(WINDOW *window, std::chrono::milliseconds period);
+        Ball();
+        Ball(WINDOW *window);
         ~Ball();
+        
+        void th_start();
+        
+    private:
+        void th_func();
+        void move();
 };
 #endif // Ball_h_

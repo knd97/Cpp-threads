@@ -10,9 +10,6 @@ Screen::Screen(int width, int height):
     box(main_window_, 0, 0);
     wprintw(main_window_, "Konrad Olszewski 238898");
     wrefresh(main_window_);
-
-    mvwprintw(main_window_, 25, 75, "#");
-    wrefresh(main_window_);
 }
 
 
@@ -23,7 +20,7 @@ int Screen::get_center_x()
 
 int Screen::get_center_y()
 {
-     return static_cast<int>((LINES - height_) / 2);
+    return static_cast<int>((LINES - height_) / 2);
 }
 
 Screen::~Screen()

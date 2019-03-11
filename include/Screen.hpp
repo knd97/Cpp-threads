@@ -2,6 +2,8 @@
 #define Screen_h_
 #include <iostream>
 #include <ncurses.h>
+#include <vector>
+#include "Ball.hpp"
 
 class Screen
 {
@@ -9,6 +11,7 @@ class Screen
         int width_;
         int height_;
         WINDOW *main_window_;
+        std::vector<Ball> balls_on_screen_;
 
     public:
         Screen() = default;
