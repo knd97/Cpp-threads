@@ -1,5 +1,6 @@
 #ifndef Screen_h_
 #define Screen_h_
+
 #include <iostream>
 #include <ncurses.h>
 #include <vector>

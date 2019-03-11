@@ -12,7 +12,6 @@ Screen::Screen(int width, int height):
     wrefresh(main_window_);
 }
 
-
 int Screen::get_center_x()
 {
     return static_cast<int>((COLS - width_) / 2);
