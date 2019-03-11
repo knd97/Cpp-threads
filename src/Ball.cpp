@@ -1,5 +1,6 @@
 #include "Ball.hpp"
 
+<<<<<<< HEAD
 Ball::Ball(WINDOW * widnow, std::chrono::milliseconds period): ball_thread_()
 {
     interval_ = period;
@@ -7,6 +8,8 @@ Ball::Ball(WINDOW * widnow, std::chrono::milliseconds period): ball_thread_()
     coordinates_.first = 0;
     coordinates_.second = 0;
 }
+=======
+>>>>>>> init
 
 Ball::~Ball()
 {

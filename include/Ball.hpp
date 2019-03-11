@@ -17,7 +17,12 @@ class Ball
         bool stop_thread_;
 
     public:
+<<<<<<< HEAD
         Ball(WINDOW *window, std::chrono::milliseconds period);
+=======
+        Ball(std::pair<int, int>position, std::chrono::milliseconds period);
+        
+>>>>>>> init
         ~Ball();
 };
 #endif // Ball_h_
