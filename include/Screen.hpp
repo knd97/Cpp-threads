@@ -17,8 +17,9 @@ class Screen
     public:
         Screen() = default;
         Screen(int width, int height);
-
         ~Screen();
+
+        void launch_balls();
     private:
         int get_center_x();             //center placement of the window
         int get_center_y();

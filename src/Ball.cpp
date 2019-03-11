@@ -26,6 +26,11 @@ void Ball::th_start()
     ball_thread_ = std::thread(&Ball::th_func, this);
 }
 
+void Ball::th_stop()
+{
+    stop_thread_ = true;
+}
+
 void Ball::move()
 {
     auto current_position {coordinates_};
@@ -52,8 +57,19 @@ void Ball::repaint_ball(std::pair<int, int> previous_position)
 
 void Ball::new_coordinates(std::pair<int, int> direction)
 {
-    coordinates_.first += direction.first;
-    coordinates_.second += direction.second;
+    if(coordinates_.first >=  getmaxx(window_) || coordinates_.first <= 1)                  //x >= window_size || x <= 1                    
+    {
+        direction.first *= -1;
+    }
+    else if(coordinates_.second >= getmaxy(window_) || coordinates_.second <= 1)
+    {
+        direction.second *= -1;
+    }
+    else
+    {
+        coordinates_.first += direction.first;
+        coordinates_.second += direction.second;
+    }
 }
 
 Ball::~Ball()

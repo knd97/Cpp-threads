@@ -27,6 +27,7 @@ class Ball
         ~Ball();
         
         void th_start();
+        void th_stop();
 
     private:
         void th_func();

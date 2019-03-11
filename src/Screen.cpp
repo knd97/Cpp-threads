@@ -12,6 +12,11 @@ Screen::Screen(int width, int height):
     wrefresh(main_window_);
 }
 
+void Screen::launch_balls()
+{
+    //while()
+}
+
 int Screen::get_center_x()
 {
     return static_cast<int>((COLS - width_) / 2);
@@ -24,5 +29,9 @@ int Screen::get_center_y()
 
 Screen::~Screen()
 {
+    for(auto &ball : balls_on_screen_)
+    {
+        ball.th_stop();
+    }
     endwin();
 }
