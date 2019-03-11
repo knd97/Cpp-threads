@@ -12,11 +12,7 @@ class Screen
 
     public:
         Screen() = default;
-<<<<<<< HEAD
         Screen(int width, int height);
-=======
-        Screen(int startX, int startY, int width, int height);
->>>>>>> init
 
         ~Screen();
     private:

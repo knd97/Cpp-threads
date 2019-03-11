@@ -15,7 +15,6 @@ Screen::Screen(int width, int height):
     wrefresh(main_window_);
 }
 
-<<<<<<< HEAD
 
 int Screen::get_center_x()
 {
@@ -27,8 +26,6 @@ int Screen::get_center_y()
      return static_cast<int>((LINES - height_) / 2);
 }
 
-=======
->>>>>>> init
 Screen::~Screen()
 {
     endwin();
