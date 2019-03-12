@@ -25,7 +25,6 @@ class Ball
     public:
         Ball(WINDOW *window);
         ~Ball();
-        
         void th_start();
         void th_stop();
 

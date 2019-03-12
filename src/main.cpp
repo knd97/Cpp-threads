@@ -2,7 +2,8 @@
 
 int main()
 {
-    Screen scr(150, 50);
+    Screen scr(75, 25);
+    scr.launch_balls();
     getch();
     return 0;
 }

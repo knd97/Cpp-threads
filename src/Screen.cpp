@@ -4,17 +4,21 @@ Screen::Screen(int width, int height):
                 width_{width}, height_{height}
 {
     initscr();
-    cbreak();    
+    cbreak();
+    curs_set(FALSE);   
     main_window_ = newwin(height_, width_, get_center_y(), get_center_x());
     refresh();
     box(main_window_, 0, 0);
-    wprintw(main_window_, "Konrad Olszewski 238898");
     wrefresh(main_window_);
 }
 
 void Screen::launch_balls()
 {
-    //while()
+    while(true){
+        balls_on_screen_.push_back(std::unique_ptr<Ball>(new Ball(main_window_)));
+        balls_on_screen_.back()->th_start();
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+    }
 }
 
 int Screen::get_center_x()
@@ -31,7 +35,7 @@ Screen::~Screen()
 {
     for(auto &ball : balls_on_screen_)
     {
-        ball.th_stop();
+        ball->th_stop();
     }
     endwin();
 }

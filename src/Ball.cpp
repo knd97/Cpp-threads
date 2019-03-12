@@ -1,24 +1,25 @@
 #include "Ball.hpp"
 
-const char *Ball::ball_symbol_ = "o";
-std::chrono::milliseconds Ball::interval_ = std::chrono::milliseconds(20);
+std::chrono::milliseconds Ball::interval_ = std::chrono::milliseconds(40);
+const char *Ball::ball_symbol_ = "0";
 std::mutex m_ball_;
 
-Ball::Ball(WINDOW * window): ball_thread_(), window_{ window }
+Ball::Ball(WINDOW * window): 
+            ball_thread_(), window_{ window }, stop_thread_{false}
 {
-    stop_thread_ = false;
     getmaxyx(window, coordinates_.second, coordinates_.first);
+    coordinates_ = {coordinates_.first / 2, coordinates_.second / 2};
     mvwprintw(window, coordinates_.second, coordinates_.first, ball_symbol_);
     wrefresh(window);
 }
 
 void Ball::th_func()
 {
-    while(!stop_thread_)
-    {
-        move();                                                              //move and repaint
-        std::this_thread::sleep_for(interval_);
-    }
+   while(!stop_thread_)
+   {
+       move();                                                                      //move and repaint
+       std::this_thread::sleep_for(interval_);
+   }
 }
 
 void Ball::th_start()
@@ -41,7 +42,7 @@ void Ball::move()
 std::pair<int, int> Ball::random_direction() const
 {
     std::random_device rd;
-    std::mt19937 mt(rd());                                                    //Mersenne Twister engine
+    std::mt19937 mt(rd());                                                               //Mersenne Twister engine
     std::uniform_int_distribution<int> dist(0, 7);
 
     return possible_moves_.at(dist(mt));
@@ -57,19 +58,16 @@ void Ball::repaint_ball(std::pair<int, int> previous_position)
 
 void Ball::new_coordinates(std::pair<int, int> direction)
 {
-    if(coordinates_.first >=  getmaxx(window_) || coordinates_.first <= 1)                  //x >= window_size || x <= 1                    
+    if(coordinates_.first + direction.first >= getmaxx(window_) - 1 || coordinates_.first + direction.first <= 1)                  //x >= window_size || x <= 1                    
     {
         direction.first *= -1;
     }
-    else if(coordinates_.second >= getmaxy(window_) || coordinates_.second <= 1)
+    else if(coordinates_.second + direction.second >= getmaxy(window_) - 1 || coordinates_.second + direction.second <= 1)
     {
         direction.second *= -1;
     }
-    else
-    {
-        coordinates_.first += direction.first;
-        coordinates_.second += direction.second;
-    }
+    coordinates_.first += direction.first;
+    coordinates_.second += direction.second;
 }
 
 Ball::~Ball()

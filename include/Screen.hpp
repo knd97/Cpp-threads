@@ -12,7 +12,7 @@ class Screen
         int width_;
         int height_;
         WINDOW *main_window_;
-        std::vector<Ball> balls_on_screen_;
+        std::vector<std::unique_ptr<Ball>> balls_on_screen_;
 
     public:
         Screen() = default;
