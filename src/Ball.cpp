@@ -58,11 +58,13 @@ void Ball::repaint_ball(std::pair<int, int> previous_position)
 
 void Ball::new_coordinates(std::pair<int, int> direction)
 {
-    if(coordinates_.first + direction.first >= getmaxx(window_) - 1 || coordinates_.first + direction.first <= 1)                  //x >= window_size || x <= 1                    
+    if(coordinates_.first + direction.first >= getmaxx(window_) - 1 
+        || coordinates_.first + direction.first <= 1)                  
     {
         direction.first *= -1;
     }
-    else if(coordinates_.second + direction.second >= getmaxy(window_) - 1 || coordinates_.second + direction.second <= 1)
+    else if(coordinates_.second + direction.second >= getmaxy(window_) - 1 
+        || coordinates_.second + direction.second <= 1)
     {
         direction.second *= -1;
     }
