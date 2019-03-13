@@ -1,15 +1,16 @@
 #include "Ball.hpp"
 
-std::chrono::milliseconds Ball::interval_ = std::chrono::milliseconds(40);
-const char *Ball::ball_symbol_ = "0";
+std::chrono::milliseconds Ball::interval_ = std::chrono::milliseconds(65);
+const char *Ball::ball_symbol_ = "o";
 std::mutex m_ball_;
 
 Ball::Ball(WINDOW * window): 
             ball_thread_(), window_{ window }, stop_thread_{false}
 {
     getmaxyx(window, coordinates_.second, coordinates_.first);
-    coordinates_ = {coordinates_.first / 2, coordinates_.second / 2};
-    mvwprintw(window, coordinates_.second, coordinates_.first, ball_symbol_);
+    position_ = {coordinates_.first / 2, coordinates_.second / 2};
+    coordinates_ = {random_direction()};
+    mvwprintw(window, position_.second, position_.first, ball_symbol_);
     wrefresh(window);
 }
 
@@ -29,13 +30,13 @@ void Ball::th_start()
 
 void Ball::th_stop()
 {
-    stop_thread_ = true;
+    stop_thread_.store(true);
 }
 
 void Ball::move()
 {
-    auto current_position {coordinates_};
-    new_coordinates(random_direction());
+    auto current_position {position_};
+    new_position();
     repaint_ball(current_position);
 }
 
@@ -52,31 +53,32 @@ void Ball::repaint_ball(std::pair<int, int> previous_position)
 {
     std::lock_guard<std::mutex> lg(m_ball_);
     mvwprintw(window_, previous_position.second, previous_position.first, " ");
-    mvwprintw(window_, coordinates_.second, coordinates_.first, ball_symbol_);
+    mvwprintw(window_, position_.second, position_.first, ball_symbol_);
     wrefresh(window_);
 }
 
-void Ball::new_coordinates(std::pair<int, int> direction)
+void Ball::check_if_rebound()
 {
-    if(coordinates_.first + direction.first >= getmaxx(window_) - 1 
-        || coordinates_.first + direction.first <= 1)                  
+    if(position_.first + coordinates_.first >= getmaxx(window_) - 1 ||
+        position_.first + coordinates_.first <= 1)                  
     {
-        direction.first *= -1;
+        coordinates_.first *= -1;
     }
-    else if(coordinates_.second + direction.second >= getmaxy(window_) - 1 
-        || coordinates_.second + direction.second <= 1)
+    else if(position_.second + coordinates_.second >= getmaxy(window_) - 1 ||
+            position_.second + coordinates_.second <= 1)
     {
-        direction.second *= -1;
+        coordinates_.second *= -1;
     }
-    coordinates_.first += direction.first;
-    coordinates_.second += direction.second;
+}
+
+void Ball::new_position()
+{
+    check_if_rebound();
+    position_.first += coordinates_.first;
+    position_.second += coordinates_.second;
 }
 
 Ball::~Ball()
 {
-    stop_thread_ = true;
-    if(ball_thread_.joinable())
-    {
-        ball_thread_.join();
-    }
+    ball_thread_.join();
 }
