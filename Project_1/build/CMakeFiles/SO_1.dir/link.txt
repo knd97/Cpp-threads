@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/SO_1.dir/src/Ball.cpp.o CMakeFiles/SO_1.dir/src/Screen.cpp.o CMakeFiles/SO_1.dir/src/main.cpp.o  -o SO_1 -lcurses /usr/lib/x86_64-linux-gnu/libform.so -pthread 

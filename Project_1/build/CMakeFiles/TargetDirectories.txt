@@ -1,3 +1,0 @@
-/home/konrad/repo/Cpp-threads/Project_1/build/CMakeFiles/rebuild_cache.dir
-/home/konrad/repo/Cpp-threads/Project_1/build/CMakeFiles/SO_1.dir
-/home/konrad/repo/Cpp-threads/Project_1/build/CMakeFiles/edit_cache.dir
