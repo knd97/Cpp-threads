@@ -62,7 +62,6 @@ void Screen::check_ball_status()
 
 void Screen::decrease_balls_amount(const std::unique_ptr<Ball> &ball)
 {
-    std::lock_guard<std::mutex> lg(m_screen_);
     auto position = std::find(main_window_.begin(), main_window_.end(), ball->get_window()) - main_window_.begin();
     balls_amount_[position]--;
     ball->set_ended();
