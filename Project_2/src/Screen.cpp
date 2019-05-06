@@ -81,7 +81,7 @@ void Screen::check_if_change()
 
         auto old_win{main_window_[old_win_num]};
         change_window(old_win, std::make_pair(new_win, win_num), old_win_num);
-        wait(std::chrono::milliseconds(1000));
+        wait(std::chrono::milliseconds(700));
     }
 }
 
@@ -110,6 +110,10 @@ uint8_t Screen::rand_window()
 std::pair<WINDOW *, uint8_t> Screen::get_new_win()
 {
     auto position{rand_window()};
+    while (balls_amount_[position] == max_balls_)
+    {
+        position = rand_window();
+    }
     return std::make_pair(main_window_[position], position);
 }
 
