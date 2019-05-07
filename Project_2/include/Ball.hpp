@@ -20,7 +20,7 @@ private:
     std::atomic<bool> stop_thread_;
     std::atomic<bool> ended_;
     const std::chrono::milliseconds interval_ = std::chrono::milliseconds(65);
-    const std::chrono::seconds lifetime_ = std::chrono::seconds(25);
+    const std::chrono::seconds lifetime_ = std::chrono::seconds(40);
     const char *ball_symbol_ = "o";
     const std::vector<std::pair<int, int>> possible_moves_{{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
 
