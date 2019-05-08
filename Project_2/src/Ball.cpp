@@ -35,7 +35,7 @@ void Ball::set_new_window(WINDOW *new_win)
 
 void Ball::th_start()
 {
-    ball_thread_ = std::thread([&]() { th_func; });
+    ball_thread_ = std::thread([&]() { th_func(); });
 }
 
 void Ball::th_stop()
