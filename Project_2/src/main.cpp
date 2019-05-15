@@ -1,8 +1,8 @@
-#include "Screen.hpp"
+#include "Setup_scene.hpp"
 
 int main()
 {
-    Screen scr(75, 25);
-    scr.launch_balls();
+    Setup_scene s;
+    s.launch_balls();
     return 0;
 }
