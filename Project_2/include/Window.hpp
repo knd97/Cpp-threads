@@ -26,7 +26,7 @@ public:
 private:
     int get_center_x(); //center placement of the window
     int get_center_y();
-    void calc_window_size(uint8_t index);
+    void create_window(uint8_t index);
     void draw_window(uint8_t index);
 };
 #endif //Window_H_

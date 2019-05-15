@@ -56,6 +56,7 @@ void Setup_scene::check_if_quit()
 
 uint8_t Setup_scene::random_index()
 {
+    //static
     std::random_device rd;
     std::mt19937 mt(rd()); //Mersenne Twister engine
     std::uniform_int_distribution<uint8_t> dist(0, screen_.get_array_size() - 1);

@@ -2,15 +2,12 @@
 
 Window::Window(uint8_t width, uint8_t height, uint8_t index) : width_{width}, height_{height}
 {
-    initscr();
-    cbreak();
-    curs_set(FALSE);
     draw_window(index);
 }
 
 void Window::draw_window(uint8_t index)
 {
-    calc_window_size(index);
+    create_window(index);
     refresh();
     box(window_, 0, 0);
     wrefresh(window_);
@@ -41,7 +38,7 @@ int Window::get_center_y()
     return static_cast<int>((LINES - height_) / 2);
 }
 
-void Window::calc_window_size(uint8_t index)
+void Window::create_window(uint8_t index)
 {
     window_ = newwin(height_, static_cast<int>(width_ / 3), get_center_y(),
                      get_center_x() + (index * static_cast<int>(width_ / 3) - 1));
@@ -59,5 +56,5 @@ void Window::set_window(WINDOW *win)
 
 Window::~Window()
 {
-    endwin();
+    delwin(window_);
 }

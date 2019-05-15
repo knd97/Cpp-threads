@@ -2,6 +2,9 @@
 
 Screen::Screen()
 {
+    initscr();
+    cbreak();
+    curs_set(FALSE);
     for (size_t i = 0; i < main_window_.size(); ++i)
     {
         main_window_[i] = std::make_unique<Window>(75, 25, i);
@@ -39,4 +42,9 @@ uint8_t Screen::get_array_size()
 std::unique_ptr<Window> &Screen::get_window(uint8_t index)
 {
     return main_window_[index];
+}
+
+Screen::~Screen()
+{
+    endwin();
 }

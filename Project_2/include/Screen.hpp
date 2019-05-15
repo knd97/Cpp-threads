@@ -16,7 +16,7 @@ private:
 
 public:
     Screen();
-    ~Screen() = default;
+    ~Screen();
     void decrement_balls(const uint8_t index);
     void increment_balls(const uint8_t index);
     std::unique_ptr<Window> &get_window(uint8_t index);
