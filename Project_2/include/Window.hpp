@@ -10,8 +10,8 @@ class Window
 private:
     uint8_t width_;
     uint8_t height_;
-    std::mutex mtx_;
     WINDOW *window_;
+    static std::mutex mtx_;
 
 public:
     Window() = default;
@@ -21,7 +21,6 @@ public:
     void repaint(std::pair<int, int> previous_position, std::pair<int, int> next_position);
     void erase_ball(std::pair<int, int> position);
     WINDOW *get_window();
-    void set_window(WINDOW *win);
 
 private:
     int get_center_x(); //center placement of the window

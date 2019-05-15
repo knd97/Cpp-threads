@@ -1,5 +1,7 @@
 #include "Window.hpp"
 
+std::mutex Window::mtx_;
+
 Window::Window(uint8_t width, uint8_t height, uint8_t index) : width_{width}, height_{height}
 {
     draw_window(index);
@@ -47,11 +49,6 @@ void Window::create_window(uint8_t index)
 WINDOW *Window::get_window()
 {
     return window_;
-}
-
-void Window::set_window(WINDOW *win)
-{
-    window_ = win;
 }
 
 Window::~Window()

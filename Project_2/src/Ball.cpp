@@ -42,7 +42,7 @@ void Ball::transit()
 
     if (possible_move_.load())
     {
-        }
+    }
     else
         th_stop();
 }
@@ -58,7 +58,7 @@ void Ball::move()
 
 void Ball::set_next_wind(WINDOW *win, uint8_t index)
 {
-    window_->set_window(win);
+    //window_->set_window(win);
     window_index_ = index;
 }
 
