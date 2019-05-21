@@ -2,12 +2,11 @@
 
 std::mutex Ball::m_ball_;
 std::condition_variable Ball::c_v_;
-std::atomic<bool> Ball::possible_move_ = false;
-uint8_t Ball::next_win_index_ = 0;
+std::atomic<bool> Ball::possible_move_ = true;
 
-Ball::Ball(std::unique_ptr<Window> &win, uint8_t index, Screen &scr) : screen_{scr}, window_{win},
-                                                                       window_index_{index},
-                                                                       stop_thread_{false}, ended_{false}
+Ball::Ball(std::shared_ptr<Window> &win, uint8_t index, std::shared_ptr<Screen> &scr) : screen_{scr}, window_{win},
+                                                                                        window_index_{index},
+                                                                                        stop_thread_{false}
 {
     getmaxyx(window_->get_window(), coordinates_.second, coordinates_.first);
     position_ = {coordinates_.first / 2, coordinates_.second / 2};
@@ -22,6 +21,7 @@ void Ball::th_start()
 void Ball::th_stop()
 {
     stop_thread_.store(true);
+    possible_move_.store(true);
     c_v_.notify_all();
 }
 
@@ -30,7 +30,8 @@ void Ball::th_func()
     while (!stop_thread_.load())
     {
         move();
-        std::this_thread::sleep_for(interval_);
+        std::this_thread::sleep_for(3 * interval_);
+        transit();
     }
     window_->erase_ball(position_);
 }
@@ -42,9 +43,23 @@ void Ball::transit()
 
     if (possible_move_.load())
     {
+        if (screen_->get_amount(next_win_index_) < screen_->get_max_balls())
+        {
+            possible_move_.store(false);
+            lck.unlock();
+            screen_->decrement_balls(window_index_);
+            window_->erase_ball(position_);
+            set_next_wind();
+            screen_->increment_balls(window_index_);
+            c_v_.notify_all();
+        }
     }
     else
+    {
+        lck.unlock();
+        screen_->decrement_balls(window_index_);
         th_stop();
+    }
 }
 
 void Ball::move()
@@ -53,13 +68,12 @@ void Ball::move()
     new_position();
     window_->repaint(current_position, position_);
     check_free_window();
-    //transit();
 }
 
-void Ball::set_next_wind(WINDOW *win, uint8_t index)
+void Ball::set_next_wind()
 {
-    //window_->set_window(win);
-    window_index_ = index;
+    window_ = screen_->get_window(next_win_index_);
+    window_index_ = next_win_index_;
 }
 
 std::pair<int, int> Ball::random_direction() const
@@ -73,25 +87,20 @@ std::pair<int, int> Ball::random_direction() const
 
 void Ball::check_free_window()
 {
-    for (size_t i = 0; i < screen_.get_array_size(); ++i)
+    auto break_{false};
+    for (size_t i = 0; i < screen_->get_array_size(); ++i)
     {
-        if (screen_.get_amount(i) < screen_.get_max_balls())
+        if (screen_->get_amount(i) < screen_->get_max_balls())
         {
             possible_move_.store(true);
             next_win_index_ = i;
-            break;
+            break_ = true;
         }
     }
-}
-
-void Ball::end_ball()
-{
-    ended_.store(true);
-}
-
-bool Ball::check_ended()
-{
-    return ended_.load();
+    if (!break_)
+    {
+        possible_move_.store(false);
+    }
 }
 
 bool Ball::check_stop()

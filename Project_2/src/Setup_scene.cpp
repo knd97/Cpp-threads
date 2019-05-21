@@ -1,7 +1,8 @@
 #include "Setup_scene.hpp"
 
-Setup_scene::Setup_scene() : screen_{Screen()}, exit_{false}
+Setup_scene::Setup_scene() : exit_{false}
 {
+    screen_ = std::make_shared<Screen>();
 }
 
 void Setup_scene::launch_balls()
@@ -10,26 +11,13 @@ void Setup_scene::launch_balls()
 
     while (!exit_.load())
     {
-        check_balls();
         auto win_number{random_index()};
-        if (screen_.get_amount(win_number) < screen_.get_max_balls())
+        if (screen_->get_amount(win_number) < screen_->get_max_balls())
         {
-            balls_on_screen_.push_back(std::make_unique<Ball>(screen_.get_window(win_number), win_number, screen_));
+            screen_->increment_balls(win_number);
+            balls_on_screen_.push_back(std::make_unique<Ball>(screen_->get_window(win_number), win_number, screen_));
             balls_on_screen_.back()->th_start();
-            screen_.increment_balls(win_number);
-            wait(std::chrono::milliseconds(3000));
-        }
-    }
-}
-
-void Setup_scene::check_balls()
-{
-    for (auto &it : balls_on_screen_)
-    {
-        if (it->check_stop() && !it->check_ended())
-        {
-            it->end_ball();
-            screen_.decrement_balls(it->get_win_index());
+            wait(std::chrono::milliseconds(8000));
         }
     }
 }
@@ -59,7 +47,7 @@ uint8_t Setup_scene::random_index()
     //static
     std::random_device rd;
     std::mt19937 mt(rd()); //Mersenne Twister engine
-    std::uniform_int_distribution<uint8_t> dist(0, screen_.get_array_size() - 1);
+    std::uniform_int_distribution<uint8_t> dist(0, screen_->get_array_size() - 1);
 
     return dist(mt);
 }
