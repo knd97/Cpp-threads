@@ -28,7 +28,7 @@ private:
     static std::condition_variable c_v_;
     static std::atomic<bool> possible_move_;
 
-    const std::chrono::milliseconds interval_ = std::chrono::milliseconds(120);
+    const std::chrono::milliseconds interval_ = std::chrono::milliseconds(40);
     const std::chrono::seconds lifetime_ = std::chrono::seconds(5);
     const std::vector<std::pair<int, int>> possible_directory_{{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
 

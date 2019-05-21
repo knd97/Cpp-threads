@@ -27,11 +27,16 @@ void Ball::th_stop()
 
 void Ball::th_func()
 {
+    auto i{1};
     while (!stop_thread_.load())
     {
         move();
-        std::this_thread::sleep_for(3 * interval_);
-        transit();
+        if (i % 10 == 0)
+        {
+            transit();
+        }
+        std::this_thread::sleep_for(interval_);
+        i++;
     }
     window_->erase_ball(position_);
 }
@@ -72,8 +77,9 @@ void Ball::move()
 
 void Ball::set_next_wind()
 {
-    window_ = screen_->get_window(next_win_index_);
+    std::lock_guard lg_(m_ball_);
     window_index_ = next_win_index_;
+    window_ = screen_->get_window(next_win_index_);
 }
 
 std::pair<int, int> Ball::random_direction() const
