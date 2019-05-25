@@ -7,9 +7,9 @@ Screen::Screen() : balls_amount_{0, 0, 0}
     initscr();
     cbreak();
     curs_set(FALSE);
-    for (size_t i = 0; i < main_window_.size(); ++i)
+    for (size_t i = 0; i < 3; ++i)
     {
-        main_window_[i] = Window(75, 25, i);
+        main_window_.push_back(Window(75, 25, i));
     }
 }
 

@@ -3,13 +3,14 @@
 
 #include <iostream>
 #include <array>
+#include <vector>
 #include <memory>
 #include "Window.hpp"
 
 class Screen
 {
 private:
-    std::array<Window, 3> main_window_;
+    std::vector<Window> main_window_;
     std::array<int, 3> balls_amount_;
     const int max_balls_ = 1;
     static std::mutex mtx_;

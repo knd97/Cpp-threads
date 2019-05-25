@@ -2,38 +2,33 @@
 
 std::mutex Window::mtx_;
 
-Window::Window(int width, int height, int index) : width_{width}, height_{height}
+Window::Window(int width, int height, int index) : width_{width}, height_{height},
+                                                   window_(newwin(height_, static_cast<int>(width_ / 3),
+                                                                  get_center_y(),
+                                                                  get_center_x() + (index * static_cast<int>(width_ / 3) - 1)),
+                                                           [](WINDOW *w) {
+                                                               delwin(w);
+                                                               endwin();
+                                                           })
 {
-    draw_window(index);
-}
-
-void Window::draw_window(int index)
-{
-    create_window(index);
     refresh();
-    box(window_, 0, 0);
-    wrefresh(window_);
-}
-
-void Window::create_window(int index)
-{
-    window_ = newwin(height_, static_cast<int>(width_ / 3), get_center_y(),
-                     get_center_x() + (index * static_cast<int>(width_ / 3) - 1));
+    box(window_.get(), 0, 0);
+    wrefresh(window_.get());
 }
 
 void Window::repaint(std::pair<int, int> previous_position, std::pair<int, int> next_position)
 {
     std::lock_guard lg(mtx_);
-    mvwprintw(window_, previous_position.second, previous_position.first, " ");
-    mvwprintw(window_, next_position.second, next_position.first, "o");
-    wrefresh(window_);
+    mvwprintw(window_.get(), previous_position.second, previous_position.first, " ");
+    mvwprintw(window_.get(), next_position.second, next_position.first, "o");
+    wrefresh(window_.get());
 }
 
 void Window::erase_ball(std::pair<int, int> position)
 {
     std::lock_guard lg(mtx_);
-    mvwprintw(window_, position.second, position.first, " ");
-    wrefresh(window_);
+    mvwprintw(window_.get(), position.second, position.first, " ");
+    wrefresh(window_.get());
 }
 
 int Window::get_maxx() const
@@ -58,5 +53,5 @@ int Window::get_center_y()
 
 Window::~Window()
 {
-    delwin(window_);
+    delwin(window_.get());
 }

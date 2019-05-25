@@ -2,12 +2,13 @@
 
 std::mutex Ball::m_ball_;
 std::condition_variable Ball::c_v_;
+std::atomic<bool> Ball::possible_move_ = false;
 
 Ball::Ball(int index, std::shared_ptr<Screen> scr) : window_index_{index},
                                                      stop_thread_{false}
 {
     screen_ = std::move(scr);
-    coordinates_ = std::make_pair(screen_->get_window(index).get_maxy(),
+    coordinates_ = std::make_pair(screen_->get_window(index).get_maxx(),
                                   screen_->get_window(index).get_maxy());
     position_ = {coordinates_.first / 2, coordinates_.second / 2};
     coordinates_ = {random_direction()};

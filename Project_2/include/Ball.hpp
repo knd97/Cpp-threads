@@ -24,7 +24,7 @@ private:
 
     static std::mutex m_ball_;
     static std::condition_variable c_v_;
-    std::atomic<bool> possible_move_;
+    static std::atomic<bool> possible_move_;
 
     const std::chrono::milliseconds interval_ = std::chrono::milliseconds(40);
     const std::chrono::seconds lifetime_ = std::chrono::seconds(5);

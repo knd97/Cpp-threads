@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <mutex>
+#include <memory>
 #include <ncurses.h>
 
 class Window
@@ -10,12 +11,16 @@ class Window
 private:
     int width_;
     int height_;
-    WINDOW *window_;
+    std::unique_ptr<WINDOW, void (*)(WINDOW *)> window_;
     static std::mutex mtx_;
 
 public:
-    Window() = default;
+    Window() = delete;
     Window(int width, int height, int index);
+    Window(const Window &) = delete;
+    Window &operator=(const Window &) = delete;
+    Window(Window &&) = default;
+    Window &operator=(Window &&) = default;
     ~Window();
 
     void repaint(std::pair<int, int> previous_position, std::pair<int, int> next_position);
@@ -26,7 +31,5 @@ public:
 private:
     int get_center_x(); //center placement of the window
     int get_center_y();
-    void create_window(int index);
-    void draw_window(int index);
 };
 #endif //Window_H_
