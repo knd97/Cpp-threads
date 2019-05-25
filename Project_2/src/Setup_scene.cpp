@@ -15,9 +15,9 @@ void Setup_scene::launch_balls()
         if (screen_->get_amount(win_number) < screen_->get_max_balls())
         {
             screen_->increment_balls(win_number);
-            balls_on_screen_.push_back(std::make_unique<Ball>(screen_->get_window(win_number), win_number, screen_));
+            balls_on_screen_.push_back(std::make_unique<Ball>(win_number, screen_));
             balls_on_screen_.back()->th_start();
-            wait(std::chrono::milliseconds(8000));
+            wait(std::chrono::milliseconds(3000));
         }
     }
 }
@@ -42,12 +42,12 @@ void Setup_scene::check_if_quit()
     }
 }
 
-uint8_t Setup_scene::random_index()
+int Setup_scene::random_index()
 {
     //static
     std::random_device rd;
     std::mt19937 mt(rd()); //Mersenne Twister engine
-    std::uniform_int_distribution<uint8_t> dist(0, screen_->get_array_size() - 1);
+    std::uniform_int_distribution<int> dist(0, screen_->get_main_window_size() - 1);
 
     return dist(mt);
 }

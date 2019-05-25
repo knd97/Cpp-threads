@@ -8,25 +8,23 @@
 #include <random>
 #include <atomic>
 #include <condition_variable>
-#include "Window.hpp"
 #include "Screen.hpp"
 
 class Ball
 {
 private:
-    std::shared_ptr<Screen> &screen_;
-    std::shared_ptr<Window> &window_;
-    uint8_t window_index_;
+    std::shared_ptr<Screen> screen_;
+    int window_index_;
+    int next_win_index_;
     std::pair<int, int> coordinates_; //random move from 'possible_moves'
     std::pair<int, int> position_;    //(x, y) position of ball
     std::thread ball_thread_;
 
     std::atomic<bool> stop_thread_;
 
-    uint8_t next_win_index_;
     static std::mutex m_ball_;
     static std::condition_variable c_v_;
-    static std::atomic<bool> possible_move_;
+    std::atomic<bool> possible_move_;
 
     const std::chrono::milliseconds interval_ = std::chrono::milliseconds(40);
     const std::chrono::seconds lifetime_ = std::chrono::seconds(5);
@@ -34,13 +32,13 @@ private:
 
 public:
     Ball() = delete;
-    Ball(std::shared_ptr<Window> &win, uint8_t index, std::shared_ptr<Screen> &scr);
+    Ball(int index, std::shared_ptr<Screen> scr);
     ~Ball();
 
     void th_start();
     void th_stop();
     bool check_stop();
-    uint8_t get_win_index();
+    int get_win_index();
 
 private:
     void transit();

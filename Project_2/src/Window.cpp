@@ -2,17 +2,23 @@
 
 std::mutex Window::mtx_;
 
-Window::Window(uint8_t width, uint8_t height, uint8_t index) : width_{width}, height_{height}
+Window::Window(int width, int height, int index) : width_{width}, height_{height}
 {
     draw_window(index);
 }
 
-void Window::draw_window(uint8_t index)
+void Window::draw_window(int index)
 {
     create_window(index);
     refresh();
     box(window_, 0, 0);
     wrefresh(window_);
+}
+
+void Window::create_window(int index)
+{
+    window_ = newwin(height_, static_cast<int>(width_ / 3), get_center_y(),
+                     get_center_x() + (index * static_cast<int>(width_ / 3) - 1));
 }
 
 void Window::repaint(std::pair<int, int> previous_position, std::pair<int, int> next_position)
@@ -30,6 +36,16 @@ void Window::erase_ball(std::pair<int, int> position)
     wrefresh(window_);
 }
 
+int Window::get_maxx() const
+{
+    return window_->_maxx;
+}
+
+int Window::get_maxy() const
+{
+    return window_->_maxy;
+}
+
 int Window::get_center_x()
 {
     return static_cast<int>((COLS - width_) / 2);
@@ -38,17 +54,6 @@ int Window::get_center_x()
 int Window::get_center_y()
 {
     return static_cast<int>((LINES - height_) / 2);
-}
-
-void Window::create_window(uint8_t index)
-{
-    window_ = newwin(height_, static_cast<int>(width_ / 3), get_center_y(),
-                     get_center_x() + (index * static_cast<int>(width_ / 3) - 1));
-}
-
-WINDOW *Window::get_window()
-{
-    return window_;
 }
 
 Window::~Window()

@@ -8,24 +8,25 @@
 class Window
 {
 private:
-    uint8_t width_;
-    uint8_t height_;
+    int width_;
+    int height_;
     WINDOW *window_;
     static std::mutex mtx_;
 
 public:
     Window() = default;
-    Window(uint8_t width, uint8_t height, uint8_t index);
+    Window(int width, int height, int index);
     ~Window();
 
     void repaint(std::pair<int, int> previous_position, std::pair<int, int> next_position);
     void erase_ball(std::pair<int, int> position);
-    WINDOW *get_window();
+    int get_maxx() const;
+    int get_maxy() const;
 
 private:
     int get_center_x(); //center placement of the window
     int get_center_y();
-    void create_window(uint8_t index);
-    void draw_window(uint8_t index);
+    void create_window(int index);
+    void draw_window(int index);
 };
 #endif //Window_H_

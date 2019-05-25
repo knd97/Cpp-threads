@@ -9,40 +9,42 @@ Screen::Screen() : balls_amount_{0, 0, 0}
     curs_set(FALSE);
     for (size_t i = 0; i < main_window_.size(); ++i)
     {
-        main_window_[i] = std::make_shared<Window>(75, 25, i);
+        main_window_[i] = Window(75, 25, i);
     }
 }
 
-uint8_t Screen::get_max_balls() const
+int Screen::get_max_balls() const
 {
     return max_balls_;
 }
 
-void Screen::increment_balls(const uint8_t index)
+void Screen::increment_balls(const int index)
 {
     std::lock_guard lg_(mtx_);
     balls_amount_[index]++;
 }
 
-void Screen::decrement_balls(const uint8_t index)
+void Screen::decrement_balls(const int index)
 {
     std::lock_guard lg_(mtx_);
     balls_amount_[index]--;
 }
 
-uint8_t Screen::get_amount(const uint8_t index)
+int Screen::get_amount(const int index)
 {
     std::lock_guard lg_(mtx_);
     return balls_amount_[index];
 }
 
-uint8_t Screen::get_array_size()
+int Screen::get_main_window_size() const
 {
+    std::lock_guard lg_(mtx_);
     return balls_amount_.size();
 }
 
-std::shared_ptr<Window> &Screen::get_window(uint8_t index)
+Window &Screen::get_window(int index)
 {
+    std::lock_guard lg_(mtx_);
     return main_window_[index];
 }
 

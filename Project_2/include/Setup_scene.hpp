@@ -28,6 +28,6 @@ public:
 private:
     void check_if_quit();
     void wait(std::chrono::milliseconds period);
-    uint8_t random_index();
+    int random_index();
 };
 #endif //Setup_scene_H_
