@@ -2,7 +2,7 @@
 
 std::mutex Ball::m_ball_;
 std::condition_variable Ball::c_v_;
-std::atomic<bool> Ball::possible_move_ = false;
+std::atomic<bool> Ball::possible_move_;
 std::random_device Ball::rd_;
 std::mt19937 Ball::mt_(Ball::rd_());
 const std::chrono::milliseconds Ball::interval_ = std::chrono::milliseconds(40);
@@ -28,6 +28,7 @@ void Ball::th_stop()
 {
     stop_thread_.store(true);
     possible_move_.store(true);
+    screen_->get_window(window_index_).erase_ball(position_);
     c_v_.notify_all();
 }
 
@@ -38,13 +39,10 @@ void Ball::th_func()
     {
         move();
         if (counter % 20 == 0)
-        {
             transit();
-        }
         std::this_thread::sleep_for(interval_);
         ++counter;
     }
-    screen_->get_window(window_index_).erase_ball(position_);
 }
 
 void Ball::transit()
@@ -96,19 +94,15 @@ std::pair<int, int> Ball::random_direction() const
 
 void Ball::check_free_window()
 {
-    auto break_{false};
-    for (size_t i = 0; i < 3; ++i)
-    {
-        if (screen_->get_balls_amount(i) < screen_->get_max_balls())
-        {
-            possible_move_.store(true);
-            next_win_index_ = i;
-            break_ = true;
-        }
-    }
-    if (!break_)
+    auto index{screen_->get_free_window()};
+    if (index == -1)
     {
         possible_move_.store(false);
+    }
+    else
+    {
+        possible_move_.store(true);
+        next_win_index_ = index;
     }
 }
 
