@@ -4,26 +4,31 @@
 #include <iostream>
 #include <array>
 #include <vector>
-#include <memory>
 #include "Window.hpp"
 
 class Screen
 {
 private:
-    std::vector<Window> main_window_;
-    std::array<int, 3> balls_amount_;
+    constexpr static int win_number_ = 3;
     const int max_balls_ = 1;
     static std::mutex mtx_;
+    std::vector<Window> main_window_;
+    std::array<int, win_number_> balls_amount_;
 
 public:
     Screen();
+    Screen(const Screen &) = delete;
+    Screen &operator=(const Screen &) = delete;
+    Screen(Screen &&) = delete;
+    Screen &operator=(Screen &&) = delete;
     ~Screen();
-    void decrement_balls(const int index);
-    void increment_balls(const int index);
-    Window &get_window(int index);
+
+    void decrement_balls_amount(const int window_index);
+    void increment_balls_amount(const int window_index);
+    Window &get_window(int window_index);
 
     int get_main_window_size() const;
     int get_max_balls() const;
-    int get_amount(const int index);
+    int get_balls_amount(const int window_index) const;
 };
 #endif // Screen_H_

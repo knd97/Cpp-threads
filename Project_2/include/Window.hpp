@@ -15,15 +15,15 @@ private:
     static std::mutex mtx_;
 
 public:
-    Window() = delete;
     Window(int width, int height, int index);
+    Window() = delete;
     Window(const Window &) = delete;
     Window &operator=(const Window &) = delete;
     Window(Window &&) = default;
     Window &operator=(Window &&) = default;
     ~Window();
 
-    void repaint(std::pair<int, int> previous_position, std::pair<int, int> next_position);
+    void repaint_ball(std::pair<int, int> previous_position, std::pair<int, int> next_position);
     void erase_ball(std::pair<int, int> position);
     int get_maxx() const;
     int get_maxy() const;

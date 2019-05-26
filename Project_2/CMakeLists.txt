@@ -21,7 +21,7 @@ include_directories(${CURSES_INCLUDE_DIRS})
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE
-    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/include/
 )
 
 target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})

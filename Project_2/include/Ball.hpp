@@ -19,26 +19,29 @@ private:
     std::pair<int, int> coordinates_; //random move from 'possible_moves'
     std::pair<int, int> position_;    //(x, y) position of ball
     std::thread ball_thread_;
-
     std::atomic<bool> stop_thread_;
 
+    static std::random_device rd_;
+    static std::mt19937 mt_;
     static std::mutex m_ball_;
     static std::condition_variable c_v_;
     static std::atomic<bool> possible_move_;
 
-    const std::chrono::milliseconds interval_ = std::chrono::milliseconds(40);
-    const std::chrono::seconds lifetime_ = std::chrono::seconds(5);
-    const std::vector<std::pair<int, int>> possible_directory_{{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
+    static const std::chrono::milliseconds interval_;
+    static const std::chrono::seconds lifetime_;
+    static const std::vector<std::pair<int, int>> possible_directory_;
 
 public:
-    Ball() = delete;
     Ball(int index, std::shared_ptr<Screen> scr);
+    Ball() = delete;
+    Ball(const Ball &) = delete;
+    Ball &operator=(const Ball &) = delete;
+    Ball(Ball &&) = delete;
+    Ball &operator=(Ball &&) = delete;
     ~Ball();
 
     void th_start();
     void th_stop();
-    bool check_stop();
-    int get_win_index();
 
 private:
     void transit();

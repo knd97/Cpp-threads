@@ -1,10 +1,9 @@
-#include "Window.hpp"
+#include "../include/Window.hpp"
 
 std::mutex Window::mtx_;
 
 Window::Window(int width, int height, int index) : width_{width}, height_{height},
-                                                   window_(newwin(height_, static_cast<int>(width_ / 3),
-                                                                  get_center_y(),
+                                                   window_(newwin(height_, static_cast<int>(width_ / 3), get_center_y(),
                                                                   get_center_x() + (index * static_cast<int>(width_ / 3) - 1)),
                                                            [](WINDOW *w) {
                                                                delwin(w);
@@ -16,7 +15,7 @@ Window::Window(int width, int height, int index) : width_{width}, height_{height
     wrefresh(window_.get());
 }
 
-void Window::repaint(std::pair<int, int> previous_position, std::pair<int, int> next_position)
+void Window::repaint_ball(std::pair<int, int> previous_position, std::pair<int, int> next_position)
 {
     std::lock_guard lg(mtx_);
     mvwprintw(window_.get(), previous_position.second, previous_position.first, " ");
@@ -33,12 +32,12 @@ void Window::erase_ball(std::pair<int, int> position)
 
 int Window::get_maxx() const
 {
-    return window_->_maxx;
+    return getmaxx(window_.get());
 }
 
 int Window::get_maxy() const
 {
-    return window_->_maxy;
+    return getmaxy(window_.get());
 }
 
 int Window::get_center_x()

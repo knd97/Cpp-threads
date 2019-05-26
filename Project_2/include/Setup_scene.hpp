@@ -3,11 +3,8 @@
 
 #include <iostream>
 #include <thread>
-#include <vector>
-#include <memory>
 #include <chrono>
 #include <random>
-#include "Window.hpp"
 #include "Ball.hpp"
 #include "Screen.hpp"
 
@@ -18,9 +15,15 @@ private:
     std::thread screen_thread_;
     std::vector<std::unique_ptr<Ball>> balls_on_screen_;
     std::atomic<bool> exit_;
+    static std::random_device rd_;
+    static std::mt19937 mt_;
 
 public:
     Setup_scene();
+    Setup_scene(const Setup_scene &) = delete;
+    Setup_scene &operator=(const Setup_scene &) = delete;
+    Setup_scene(Setup_scene &&) = delete;
+    Setup_scene &operator=(Setup_scene &&) = delete;
     ~Setup_scene();
 
     void launch_balls();
@@ -28,6 +31,6 @@ public:
 private:
     void check_if_quit();
     void wait(std::chrono::milliseconds period);
-    int random_index();
+    int random_window_index();
 };
 #endif //Setup_scene_H_
