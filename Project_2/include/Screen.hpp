@@ -12,7 +12,7 @@ class Screen
 {
 private:
     constexpr static int win_number_ = 3;
-    const int max_balls_ = 2;
+    const int max_balls_ = 1;
     static std::mutex mtx_;
     static std::random_device rd_;
     static std::mt19937 mt_;
