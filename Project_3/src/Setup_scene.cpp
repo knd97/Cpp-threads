@@ -1,26 +1,27 @@
 #include "../include/Setup_scene.hpp"
 
-Setup_scene::Setup_scene(double frequency) : exit_{false},
-                                             new_ship_freq_{frequency},
-                                             period_{std::chrono::milliseconds(15000)}
+Setup_scene::Setup_scene(double frequency, double weather) : exit_{false},
+                                                             new_ship_freq_{frequency},
+                                                             weather_{weather},
+                                                             period_{std::chrono::milliseconds(15000)}
 
 {
-    initscr();
-    cbreak();
-    curs_set(FALSE);
-    main_winodw_ = std::make_unique<Window>();
+    main_winodw_ = std::make_shared<Window>();
+    main_winodw_->draw_scene();
 }
 
 void Setup_scene::launch_seaport()
 {
+    auto i{0};
     screen_thread_ = std::thread([&]() { check_if_quit(); });
 
     launch_workers();
-    while (exit_.load())
+    while (!exit_.load())
     {
-        ships_.push_back(std::make_unique<Ship>());
-        //ships_.back()->start();
+        ships_.push_back(std::make_unique<Ship>(std::make_pair(40 - i * 2, 40), main_winodw_));
+        ships_.back()->start();
         wait();
+        ++i;
     }
 }
 
@@ -56,11 +57,12 @@ void Setup_scene::wait()
 Setup_scene::~Setup_scene()
 {
     screen_thread_.join();
-    //for (auto &ship : ships_)
-    //    //ship->stop();
-    //
-    //    for (auto &worker : workers_)
-    //        //worker->stop();
-    //        ships_.clear();
+    for (auto &ship : ships_)
+        ship->stop();
+
+    //for (auto &worker : workers_)
+    //    worker->stop();
+
+    ships_.clear();
     workers_.clear();
 }
