@@ -4,6 +4,7 @@
 #include <atomic>
 #include <thread>
 #include "Window.hpp"
+#include "SeaPort.hpp"
 
 class Ship
 {
@@ -17,11 +18,17 @@ private:
     std::atomic<bool> stop_thread_;
     std::thread ship_thread_;
     std::shared_ptr<Window> window_;
+    std::shared_ptr<SeaPort> seaport_;
     static const std::chrono::milliseconds speed_;
 
 public:
-    Ship(std::pair<int, int> stop_coordinates, std::shared_ptr<Window> win);
+    Ship(std::pair<int, int> stop_coordinates, std::shared_ptr<Window> win, std::shared_ptr<SeaPort> seaport);
+    Ship(const Ship &) = delete;
+    Ship &operator=(const Ship &) = delete;
+    Ship(Ship &&) = delete;
+    Ship &operator=(Ship &&) = delete;
     ~Ship();
+
     void stop();
     void start();
 

@@ -15,6 +15,7 @@ set(SOURCES
     src/Ship.cpp
     src/Window.cpp
     src/Worker.cpp
+    src/SeaPort.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

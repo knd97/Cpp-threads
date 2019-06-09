@@ -3,10 +3,11 @@
 const std::pair<int, int> Ship::starting_point_ = {15, 12};
 const std::chrono::milliseconds Ship::speed_ = std::chrono::milliseconds(100);
 
-Ship::Ship(std::pair<int, int> stop_coordinates, std::shared_ptr<Window> win) : coordinates_wait_{stop_coordinates},
-                                                                                coordinates_{starting_point_},
-                                                                                stop_thread_{false},
-                                                                                window_{std::move(win)}
+Ship::Ship(std::pair<int, int> stop_coordinates, std::shared_ptr<Window> win, std::shared_ptr<SeaPort> seaport) : coordinates_wait_{stop_coordinates},
+                                                                                                                  coordinates_{starting_point_},
+                                                                                                                  stop_thread_{false},
+                                                                                                                  window_{std::move(win)},
+                                                                                                                  seaport_{std::move(seaport)}
 {
 }
 
@@ -26,7 +27,7 @@ void Ship::th_func()
 void Ship::stop()
 {
     stop_thread_.store(true);
-    window_->free_place();
+    //window_->free_place();
 }
 
 void Ship::new_position(int step, bool direction)

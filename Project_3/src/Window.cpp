@@ -84,11 +84,13 @@ void Window::draw_stats()
     mvwprintw(window_.get(), MIDDLE_RAMP, 4, "Middle ramp: ");
     mvwprintw(window_.get(), DOWN_RAMP, 4, "Down ramp: ");
     mvwprintw(window_.get(), SHIPS_IN_QUEUE, 4, "Ships in queue: ");
+    mvwprintw(window_.get(), FREE_WORKERS, 4, "Free workers: ");
     wattroff(window_.get(), COLOR_PAIR(WHITE));
     update_status(TOP_RAMP, "Free", GREEN);
     update_status(MIDDLE_RAMP, "Free", GREEN);
     update_status(DOWN_RAMP, "Free", GREEN);
     update_status(SHIPS_IN_QUEUE, "0", GREEN);
+    update_status(FREE_WORKERS, "5", GREEN);
 }
 
 void Window::move_ship(std::pair<int, int> &previous_position, std::pair<int, int> &next_position, bool direction)
@@ -134,6 +136,16 @@ void Window::update_status(const short stat, std::string status, const short col
     mvwprintw(window_.get(), stat, 20, status.c_str());
     wattroff(window_.get(), COLOR_PAIR(color));
     wrefresh(window_.get());
+}
+
+int Window::get_height() const
+{
+    return height_;
+}
+
+int Window::get_width() const
+{
+    return width_;
 }
 
 Window::~Window()

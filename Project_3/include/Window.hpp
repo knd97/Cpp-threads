@@ -25,6 +25,7 @@ private:
     const short MIDDLE_RAMP = 6;
     const short DOWN_RAMP = 7;
     const short SHIPS_IN_QUEUE = 8;
+    const short FREE_WORKERS = 9;
 
 public:
     Window();
@@ -34,11 +35,14 @@ public:
     Window &operator=(Window &&) = default;
     ~Window();
 
+    int get_width() const;
+    int get_height() const;
     void draw_scene();
     void update_status(const short stat, std::string status, const short color);
     void move_ship(std::pair<int, int> &previous_position, std::pair<int, int> &next_position, bool direction);
-    void move_worker(std::pair<int, int> &previous_position, std::pair<int, int> &next_position, bool direction);
     void erase_ship(std::pair<int, int> &previous_position, bool direction);
+
+    void move_worker(std::pair<int, int> &previous_position, std::pair<int, int> &next_position, bool direction);
 
 private:
     void ncurses_rectangle(int y1, int x1, int y2, int x2);

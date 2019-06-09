@@ -8,6 +8,7 @@ Setup_scene::Setup_scene(double frequency, double weather) : exit_{false},
 {
     main_winodw_ = std::make_shared<Window>();
     main_winodw_->draw_scene();
+    ramps_ = std::make_shared<SeaPort>(main_winodw_->get_height(), main_winodw_->get_width());
 }
 
 void Setup_scene::launch_seaport()
@@ -18,7 +19,7 @@ void Setup_scene::launch_seaport()
     launch_workers();
     while (!exit_.load())
     {
-        ships_.push_back(std::make_unique<Ship>(std::make_pair(40 - i * 2, 40), main_winodw_));
+        ships_.push_back(std::make_unique<Ship>(std::make_pair(40 - i * 2, 40), main_winodw_, ramps_));
         ships_.back()->start();
         wait();
         ++i;
