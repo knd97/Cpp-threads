@@ -1,6 +1,7 @@
 #include "../include/Worker.hpp"
 
 const std::chrono::milliseconds Worker::speed_ = std::chrono::milliseconds(100);
+std::mutex Worker::m_worker_;
 
 Worker::Worker(std::pair<int, int> coordinates, std::shared_ptr<SeaPort> ramps, std::shared_ptr<Window> main_window) : starting_poit_{coordinates},
                                                                                                                        seaport_{std::move(ramps)},
@@ -16,17 +17,23 @@ void Worker::start()
 
 void Worker::th_func()
 {
-    //while (!stop_thread_.load())
+    while (!stop_thread_.load())
     {
         window_->move_worker(previous_coordinates_, coordinates_);
-        worker_to_ramp(seaport_->get_ramp(seaport_->get_free_ramp()));
-        back_to_queue();
+        std::unique_lock lck(m_worker_);
+        c_v_.wait(lck, [&]() { return seaport_->check_if_worker_needed(); });
+
+        int occupied_ramp{seaport_->worker_needed()};
+        worker_to_ramp(seaport_->get_ramp(occupied_ramp));
+        //back_to_queue();
     }
 }
 
 void Worker::stop()
 {
     stop_thread_.store(true);
+    window_->erase_worker(coordinates_);
+    c_v_.notify_all();
 }
 
 void Worker::repaint_worker()

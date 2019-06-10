@@ -145,6 +145,13 @@ void Window::move_worker(std::pair<int, int> &previous_position, std::pair<int, 
     wrefresh(window_.get());
 }
 
+void Window::erase_worker(std::pair<int, int> &previous_position)
+{
+    std::lock_guard l_g_(mtx_);
+    mvwprintw(window_.get(), previous_position.first, previous_position.second, " ");
+    wrefresh(window_.get());
+}
+
 int Window::get_height() const
 {
     return height_;

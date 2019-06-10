@@ -2,12 +2,14 @@
 
 const std::pair<int, int> Ship::starting_point_ = {15, 12};
 const std::chrono::milliseconds Ship::speed_ = std::chrono::milliseconds(100);
+std::mutex Ship::m_ship_;
 
 Ship::Ship(std::pair<int, int> stop_coordinates, std::shared_ptr<Window> win, std::shared_ptr<SeaPort> seaport) : coordinates_wait_{stop_coordinates},
                                                                                                                   coordinates_{starting_point_},
                                                                                                                   stop_thread_{false},
                                                                                                                   window_{std::move(win)},
-                                                                                                                  seaport_{std::move(seaport)}
+                                                                                                                  seaport_{std::move(seaport)},
+                                                                                                                  port_index_{-1}
 {
 }
 
@@ -21,15 +23,22 @@ void Ship::th_func()
     //while (!stop_thread_.load())
     {
         ship_to_queue();
-        ship_to_ramp(seaport_->get_ramp(seaport_->get_free_ramp()));
-        launch_ship();
+        std::unique_lock lck(m_ship_);
+        c_v_.wait(lck, [&]() { return seaport_->free_ramp(); });
+
+        int free_ramp = seaport_->get_free_ramp();
+        seaport_->occupate_ramp(free_ramp);
+        ship_to_ramp(seaport_->get_ramp(free_ramp));
+        seaport_->ship_parked(free_ramp);
+        //launch_ship();
     }
 }
 
 void Ship::stop()
 {
     stop_thread_.store(true);
-    window_->erase_ship(coordinates_, false);
+    window_->erase_ship(coordinates_, direction_);
+    c_v_.notify_all();
 }
 
 void Ship::new_position(int step, bool direction)

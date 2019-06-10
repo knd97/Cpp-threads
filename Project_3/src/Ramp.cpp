@@ -38,3 +38,16 @@ std::pair<int, int> Ramp::get_worker_coords()
     std::lock_guard l_g_(mtx_);
     return worker_coordinates_;
 }
+
+void Ramp::ship_is_coming()
+{
+    std::lock_guard l_g_(mtx_);
+    is_ship_coming_.store(true);
+}
+
+void Ramp::moor_ship()
+{
+    std::lock_guard l_g_(mtx_);
+    is_ship_coming_.store(false);
+    is_free_.store(false);
+}

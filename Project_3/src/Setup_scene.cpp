@@ -16,8 +16,8 @@ void Setup_scene::launch_seaport()
     auto i{0};
     screen_thread_ = std::thread([&]() { check_if_quit(); });
 
-    launch_workers();
-    //while (!exit_.load())
+    //launch_workers();
+    while (!exit_.load())
     {
         ships_.push_back(std::make_unique<Ship>(std::make_pair(40 - i * 2, 40), main_winodw_, ramps_));
         ships_.back()->start();

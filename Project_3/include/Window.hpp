@@ -44,6 +44,7 @@ public:
     void erase_ship(std::pair<int, int> &previous_position, bool direction);
 
     void move_worker(std::pair<int, int> &previous_position, std::pair<int, int> &next_position);
+    void erase_worker(std::pair<int, int> &previous_position);
 
 private:
     void ncurses_rectangle(int y1, int x1, int y2, int x2);

@@ -30,4 +30,7 @@ public:
 
     std::pair<int, int> get_ship_coords();
     std::pair<int, int> get_worker_coords();
+
+    void ship_is_coming();
+    void moor_ship();
 };

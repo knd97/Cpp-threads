@@ -14,6 +14,8 @@ private:
     std::pair<int, int> coordinates_;
     std::pair<int, int> previous_coordinates_;
     static const std::chrono::milliseconds speed_;
+    std::condition_variable c_v_;
+    static std::mutex m_worker_;
     std::atomic<bool> stop_thread_;
 
 public:
