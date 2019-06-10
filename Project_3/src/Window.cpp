@@ -30,14 +30,13 @@ void Window::draw_ramps()
     {
         for (size_t j = 0; j < 7; ++j)
         {
-            mvwprintw(window_.get(), height_ / 2 - 5 + i * 3, width_ / 2 + j, "-");
+            mvwprintw(window_.get(), height_ / 2 - 5 + i * 2, width_ / 2 + j, "-");
         }
-        mvwprintw(window_.get(), height_ / 2 - 5 + i * 3 + 1, width_ / 2 + 3, "|");
-        mvwprintw(window_.get(), height_ / 2 - 5 + i * 3 + 2, width_ / 2 + 3, "|");
+        mvwprintw(window_.get(), height_ / 2 - 5 + i * 2 + 1, width_ / 2 + 3, "|");
     }
     for (size_t j = 0; j < 7; ++j)
     {
-        mvwprintw(window_.get(), height_ / 2 - 5 + 3 * 3, width_ / 2 + j, "-");
+        mvwprintw(window_.get(), height_ / 2 - 5 + 3 * 2, width_ / 2 + j, "-");
     }
     wattroff(window_.get(), COLOR_PAIR(GREEN));
     wrefresh(window_.get());

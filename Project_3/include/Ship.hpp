@@ -33,8 +33,10 @@ public:
     void start();
 
 private:
-    void ship_to_ramp();
+    void repaint_ship();
+    void ship_to_ramp(std::shared_ptr<Ramp> ramp);
     void ship_to_queue();
+    void launch_ship();
     void th_func();
     void new_position(int step, bool direction);
 };

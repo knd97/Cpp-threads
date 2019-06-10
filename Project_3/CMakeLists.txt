@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(SO_2 VERSION 1.0.0)
 
-set(CMAKE_CXX_FLAGS "-O3 -Wall -Werror -Wno-missing-braces -pedantic")
+set(CMAKE_CXX_FLAGS "-O1 -Wall -Werror -Wno-missing-braces -pedantic")
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 

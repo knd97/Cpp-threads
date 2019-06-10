@@ -1,12 +1,12 @@
 #include "../include/Ramp.hpp"
 
-Ramp::Ramp(std::pair<int, int> coordinates) : is_free_{false},
+Ramp::Ramp(std::pair<int, int> coordinates) : is_free_{true},
                                               is_worker_{false},
                                               is_ship_coming_{false},
                                               ship_coordinates_{coordinates},
                                               worker_coordinates_{coordinates}
 {
-    ship_coordinates_.second -= 2;
+    //ship_coordinates_.second -= 2;
     worker_coordinates_.second += 1;
 }
 

@@ -18,9 +18,11 @@ void Ship::start()
 
 void Ship::th_func()
 {
-    while (!stop_thread_.load())
+    //while (!stop_thread_.load())
     {
         ship_to_queue();
+        ship_to_ramp(seaport_->get_ramp(seaport_->get_free_ramp()));
+        launch_ship();
     }
 }
 
@@ -46,8 +48,34 @@ void Ship::new_position(int step, bool direction)
     }
 }
 
-void Ship::ship_to_ramp()
+void Ship::ship_to_ramp(std::shared_ptr<Ramp> ramp)
 {
+    auto ramp_coordinates{ramp->get_ship_coords()};
+    auto half_way{(coordinates_.second + ramp_coordinates.second) / 2};
+
+    while (coordinates_.second < half_way)
+    {
+        new_position(1, true);
+        repaint_ship();
+        std::this_thread::sleep_for(speed_);
+    }
+
+    while (coordinates_.first != ramp_coordinates.first)
+    {
+        if (coordinates_.first - ramp_coordinates.first < 0)
+            new_position(1, false);
+        else
+            new_position(-1, false);
+        repaint_ship();
+        std::this_thread::sleep_for(speed_);
+    }
+
+    while (coordinates_.second < ramp_coordinates.second)
+    {
+        new_position(1, true);
+        repaint_ship();
+        std::this_thread::sleep_for(speed_);
+    }
 }
 
 void Ship::ship_to_queue()
@@ -55,18 +83,41 @@ void Ship::ship_to_queue()
     while (coordinates_.first < coordinates_wait_.first)
     {
         new_position(1, false);
-        window_->erase_ship(previous_coordinates_, previous_direction_);
-        window_->move_ship(previous_coordinates_, coordinates_, direction_);
+        repaint_ship();
         std::this_thread::sleep_for(speed_);
     }
 
     while (coordinates_.second < coordinates_wait_.second)
     {
         new_position(1, true);
-        window_->erase_ship(previous_coordinates_, previous_direction_);
-        window_->move_ship(previous_coordinates_, coordinates_, direction_);
+        repaint_ship();
         std::this_thread::sleep_for(speed_);
     }
+}
+
+void Ship::launch_ship()
+{
+    auto current_x{coordinates_.second};
+
+    while (coordinates_.second > current_x - 13)
+    {
+        new_position(-1, true);
+        repaint_ship();
+        std::this_thread::sleep_for(speed_);
+    }
+
+    while (coordinates_.first > 10)
+    {
+        new_position(-1, false);
+        repaint_ship();
+        std::this_thread::sleep_for(speed_);
+    }
+}
+
+void Ship::repaint_ship()
+{
+    window_->erase_ship(previous_coordinates_, previous_direction_);
+    window_->move_ship(previous_coordinates_, coordinates_, direction_);
 }
 
 Ship::~Ship()

@@ -4,7 +4,7 @@ SeaPort::SeaPort(int width, int height)
 {
     for (size_t i = 0; i < 3; ++i)
     {
-        ramps_.push_back(std::make_shared<Ramp>(std::make_pair(height / 2 - 5 + i * 3, width / 2 + 3)));
+        ramps_.push_back(std::make_shared<Ramp>(std::make_pair(24 + i * 2, 120)));
     }
 }
 
