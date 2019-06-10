@@ -140,8 +140,8 @@ void Window::update_status(const short stat, std::string status, const short col
 void Window::move_worker(std::pair<int, int> &previous_position, std::pair<int, int> &next_position)
 {
     std::lock_guard l_g_(mtx_);
-    mvwprintw(window_.get(), previous_position.second, previous_position.first, " ");
-    mvwprintw(window_.get(), next_position.second, next_position.first, "o");
+    mvwprintw(window_.get(), previous_position.first, previous_position.second, " ");
+    mvwprintw(window_.get(), next_position.first, next_position.second, "o");
     wrefresh(window_.get());
 }
 

@@ -21,6 +21,8 @@ void Setup_scene::launch_seaport()
     {
         ships_.push_back(std::make_unique<Ship>(std::make_pair(40 - i * 2, 40), main_winodw_, ramps_));
         ships_.back()->start();
+        workers_.push_back(std::make_unique<Worker>(std::make_pair(40 - i * 2, 160), ramps_, main_winodw_));
+        workers_.back()->start();
         wait();
         ++i;
     }
@@ -28,11 +30,11 @@ void Setup_scene::launch_seaport()
 
 void Setup_scene::launch_workers()
 {
-    for (size_t i = 0; i < 5; ++i)
-    {
-        workers_.push_back(std::make_unique<Worker>());
-        //workers_.back()->start();
-    }
+    //for (size_t i = 0; i < 1; ++i)
+    //{
+    //    workers_.push_back(std::make_unique<Worker>(std::make_pair(160, 40 - i * 2), ramps_, main_winodw_));
+    //    workers_.back()->start();
+    //}
 }
 
 void Setup_scene::check_if_quit()

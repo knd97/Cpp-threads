@@ -29,7 +29,7 @@ void Ship::th_func()
 void Ship::stop()
 {
     stop_thread_.store(true);
-    //window_->free_place();
+    window_->erase_ship(coordinates_, false);
 }
 
 void Ship::new_position(int step, bool direction)

@@ -7,13 +7,13 @@
 class Worker
 {
 private:
-    static const std::pair<int, int> starting_poit_;
+    const std::pair<int, int> starting_poit_;
     std::thread worker_thread_;
-    std::shared_ptr<SeaPort> ramps_;
+    std::shared_ptr<SeaPort> seaport_;
     std::shared_ptr<Window> window_;
     std::pair<int, int> coordinates_;
     std::pair<int, int> previous_coordinates_;
-    std::chrono::milliseconds speed_;
+    static const std::chrono::milliseconds speed_;
     std::atomic<bool> stop_thread_;
 
 public:

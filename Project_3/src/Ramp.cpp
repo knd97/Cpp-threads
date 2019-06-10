@@ -6,8 +6,7 @@ Ramp::Ramp(std::pair<int, int> coordinates) : is_free_{true},
                                               ship_coordinates_{coordinates},
                                               worker_coordinates_{coordinates}
 {
-    //ship_coordinates_.second -= 2;
-    worker_coordinates_.second += 1;
+    worker_coordinates_.second += 3;
 }
 
 bool Ramp::check_if_free()
