@@ -61,8 +61,8 @@ Setup_scene::~Setup_scene()
     for (auto &ship : ships_)
         ship->stop();
 
-    //for (auto &worker : workers_)
-    //    worker->stop();
+    for (auto &worker : workers_)
+        worker->stop();
 
     ships_.clear();
     workers_.clear();

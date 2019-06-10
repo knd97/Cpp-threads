@@ -137,6 +137,14 @@ void Window::update_status(const short stat, std::string status, const short col
     wrefresh(window_.get());
 }
 
+void Window::move_worker(std::pair<int, int> &previous_position, std::pair<int, int> &next_position)
+{
+    std::lock_guard l_g_(mtx_);
+    mvwprintw(window_.get(), previous_position.second, previous_position.first, " ");
+    mvwprintw(window_.get(), next_position.second, next_position.first, "o");
+    wrefresh(window_.get());
+}
+
 int Window::get_height() const
 {
     return height_;
