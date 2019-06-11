@@ -20,10 +20,12 @@ public:
     int get_free_ramp() const;
     std::shared_ptr<Ramp> &get_ramp(const int index);
     bool free_ramp();
-
+    int worker_needed();
     bool check_if_worker_needed();
+
     void occupate_ramp(const int index);
     void ship_parked(const int index);
-
-    int worker_needed();
+    void worket_to_ramp(const int index);
+    void worker_finished(const int index);
+    void ship_exit(const int index);
 };

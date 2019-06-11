@@ -17,7 +17,7 @@ private:
     std::thread screen_thread_;
     std::vector<std::unique_ptr<Ship>> ships_;
     std::vector<std::unique_ptr<Worker>> workers_;
-    std::shared_ptr<Window> main_winodw_;
+    std::shared_ptr<Window> main_window_;
     std::shared_ptr<SeaPort> ramps_;
     std::atomic<bool> exit_;
     double new_ship_freq_;
@@ -36,6 +36,5 @@ public:
 
 private:
     void check_if_quit();
-    void wait();
     void launch_workers();
 };

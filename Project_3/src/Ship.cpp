@@ -3,6 +3,7 @@
 const std::pair<int, int> Ship::starting_point_ = {15, 12};
 const std::chrono::milliseconds Ship::speed_ = std::chrono::milliseconds(100);
 std::mutex Ship::m_ship_;
+std::condition_variable Ship::c_v_;
 
 Ship::Ship(std::pair<int, int> stop_coordinates, std::shared_ptr<Window> win, std::shared_ptr<SeaPort> seaport) : coordinates_wait_{stop_coordinates},
                                                                                                                   coordinates_{starting_point_},
@@ -20,17 +21,24 @@ void Ship::start()
 
 void Ship::th_func()
 {
-    //while (!stop_thread_.load())
+    while (!stop_thread_.load())
     {
         ship_to_queue();
         std::unique_lock lck(m_ship_);
         c_v_.wait(lck, [&]() { return seaport_->free_ramp(); });
 
+        lck.unlock();
         int free_ramp = seaport_->get_free_ramp();
         seaport_->occupate_ramp(free_ramp);
         ship_to_ramp(seaport_->get_ramp(free_ramp));
         seaport_->ship_parked(free_ramp);
-        //launch_ship();
+
+        lck.lock();
+        Worker::notify_worker();
+        c_v_.wait(lck);
+        seaport_->ship_exit(free_ramp);
+        launch_ship();
+        stop();
     }
 }
 
@@ -127,6 +135,11 @@ void Ship::repaint_ship()
 {
     window_->erase_ship(previous_coordinates_, previous_direction_);
     window_->move_ship(previous_coordinates_, coordinates_, direction_);
+}
+
+void Ship::notify_ship()
+{
+    c_v_.notify_one();
 }
 
 Ship::~Ship()

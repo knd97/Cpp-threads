@@ -1,8 +1,10 @@
 #pragma once
 
 #include <thread>
+#include <random>
 #include "SeaPort.hpp"
 #include "Window.hpp"
+#include "Ship.hpp"
 
 class Worker
 {
@@ -14,8 +16,10 @@ private:
     std::pair<int, int> coordinates_;
     std::pair<int, int> previous_coordinates_;
     static const std::chrono::milliseconds speed_;
-    std::condition_variable c_v_;
+    static std::condition_variable c_v_;
     static std::mutex m_worker_;
+    static std::random_device rd_;
+    static std::mt19937 mt_;
     std::atomic<bool> stop_thread_;
 
 public:
@@ -28,11 +32,14 @@ public:
 
     void stop();
     void start();
+    static void notify_worker();
 
 private:
+    void unpack_ship();
     void th_func();
     void worker_to_ramp(std::shared_ptr<Ramp> ramp);
     void back_to_queue();
     void repaint_worker();
     void new_position(std::pair<int, int> step);
+    int random_number();
 };

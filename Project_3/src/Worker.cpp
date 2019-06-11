@@ -2,6 +2,9 @@
 
 const std::chrono::milliseconds Worker::speed_ = std::chrono::milliseconds(100);
 std::mutex Worker::m_worker_;
+std::condition_variable Worker::c_v_;
+std::random_device Worker::rd_;
+std::mt19937 Worker::mt_(Worker::rd_());
 
 Worker::Worker(std::pair<int, int> coordinates, std::shared_ptr<SeaPort> ramps, std::shared_ptr<Window> main_window) : starting_poit_{coordinates},
                                                                                                                        seaport_{std::move(ramps)},
@@ -23,9 +26,16 @@ void Worker::th_func()
         std::unique_lock lck(m_worker_);
         c_v_.wait(lck, [&]() { return seaport_->check_if_worker_needed(); });
 
+        lck.unlock();
         int occupied_ramp{seaport_->worker_needed()};
         worker_to_ramp(seaport_->get_ramp(occupied_ramp));
-        //back_to_queue();
+        seaport_->worket_to_ramp(occupied_ramp);
+        unpack_ship();
+        seaport_->worker_finished(occupied_ramp);
+
+        Ship::notify_ship();
+        back_to_queue();
+        std::this_thread::sleep_for(std::chrono::milliseconds(400));
     }
 }
 
@@ -105,6 +115,23 @@ void Worker::back_to_queue()
         repaint_worker();
         std::this_thread::sleep_for(speed_);
     }
+}
+
+void Worker::unpack_ship()
+{
+    std::this_thread::sleep_for(random_number() * std::chrono::milliseconds(200));
+}
+
+int Worker::random_number()
+{
+    std::uniform_int_distribution<int> dist(1, 8);
+
+    return dist(mt_);
+}
+
+void Worker::notify_worker()
+{
+    c_v_.notify_one();
 }
 
 Worker::~Worker()

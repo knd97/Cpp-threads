@@ -33,4 +33,8 @@ public:
 
     void ship_is_coming();
     void moor_ship();
+    void send_worker();
+
+    void worker_to_queue();
+    void leave_ship();
 };

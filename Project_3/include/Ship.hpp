@@ -6,6 +6,7 @@
 #include <condition_variable>
 #include "Window.hpp"
 #include "SeaPort.hpp"
+#include "Worker.hpp"
 
 class Ship
 {
@@ -18,7 +19,7 @@ private:
     std::atomic<bool> previous_direction_;
     std::atomic<bool> stop_thread_;
     std::thread ship_thread_;
-    std::condition_variable c_v_;
+    static std::condition_variable c_v_;
     static std::mutex m_ship_;
     std::shared_ptr<Window> window_;
     std::shared_ptr<SeaPort> seaport_;
@@ -35,6 +36,7 @@ public:
 
     void stop();
     void start();
+    static void notify_ship();
 
 private:
     void repaint_ship();

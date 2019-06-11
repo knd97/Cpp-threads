@@ -10,14 +10,15 @@ Window::Window() : width_{getmaxx(stdscr)},
                                endwin();
                            })
 {
+    use_default_colors();
     refresh();
     box(window_.get(), 0, 0);
     wrefresh(window_.get());
-    init_pairs();
 }
 
 void Window::draw_scene()
 {
+    init_pairs();
     draw_title();
     draw_stats();
     draw_ramps();
@@ -47,12 +48,12 @@ void Window::init_pairs()
     init_color(COLOR_GREEN, 0, 700, 0);
     init_color(COLOR_RED, 700, 0, 0);
 
-    init_pair(WHITE, COLOR_WHITE, COLOR_BLACK);
-    init_pair(RED, COLOR_RED, COLOR_BLACK);
-    init_pair(BLUE, COLOR_BLUE, COLOR_BLACK);
-    init_pair(GREEN, COLOR_GREEN, COLOR_BLACK);
-    init_pair(PINK, COLOR_MAGENTA, COLOR_BLACK);
-    init_pair(YELLOW, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(WHITE, COLOR_WHITE, -1);
+    init_pair(RED, COLOR_RED, -1);
+    init_pair(BLUE, COLOR_BLUE, -1);
+    init_pair(GREEN, COLOR_GREEN, -1);
+    init_pair(PINK, COLOR_MAGENTA, -1);
+    init_pair(YELLOW, COLOR_YELLOW, -1);
 }
 
 void Window::ncurses_rectangle(int y1, int x1, int y2, int x2)

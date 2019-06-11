@@ -12,7 +12,7 @@ int SeaPort::get_free_ramp() const
 {
     for (size_t i = 0; i < ramps_.size(); ++i)
     {
-        if (ramps_[i]->check_if_free())
+        if (ramps_[i]->check_if_free() && !ramps_[i]->check_if_ship_coming())
             return i;
     }
     return -1;
@@ -22,7 +22,7 @@ bool SeaPort::free_ramp()
 {
     for (size_t i = 0; i < ramps_.size(); ++i)
     {
-        if (ramps_[i]->check_if_free())
+        if (ramps_[i]->check_if_free() && !ramps_[i]->check_if_ship_coming())
             return true;
     }
     return false;
@@ -60,7 +60,22 @@ void SeaPort::occupate_ramp(const int index)
     ramps_[index]->ship_is_coming();
 }
 
+void SeaPort::worket_to_ramp(const int index)
+{
+    ramps_[index]->send_worker();
+}
+
 void SeaPort::ship_parked(const int index)
 {
     ramps_[index]->moor_ship();
+}
+
+void SeaPort::worker_finished(const int index)
+{
+    ramps_[index]->worker_to_queue();
+}
+
+void SeaPort::ship_exit(const int index)
+{
+    ramps_[index]->leave_ship();
 }

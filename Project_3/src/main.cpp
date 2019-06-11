@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     curs_set(FALSE);
     nodelay(stdscr, 0);
     noecho();
-    raw();
+    //raw();
 
     Setup_scene scene(0.7, 0.3);
     scene.launch_seaport();
