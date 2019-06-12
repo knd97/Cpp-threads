@@ -24,8 +24,6 @@ private:
     const short TOP_RAMP = 5;
     const short MIDDLE_RAMP = 6;
     const short DOWN_RAMP = 7;
-    const short SHIPS_IN_QUEUE = 8;
-    const short FREE_WORKERS = 9;
 
 public:
     Window();
@@ -45,6 +43,9 @@ public:
 
     void move_worker(std::pair<int, int> &previous_position, std::pair<int, int> &next_position);
     void erase_worker(std::pair<int, int> &previous_position);
+
+    void ramp_is_busy(const int index);
+    void ramp_is_free(const int index);
 
 private:
     void ncurses_rectangle(int y1, int x1, int y2, int x2);

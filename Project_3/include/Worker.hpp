@@ -16,7 +16,6 @@ private:
     std::pair<int, int> coordinates_;
     std::pair<int, int> previous_coordinates_;
     static const std::chrono::milliseconds speed_;
-    static std::condition_variable c_v_;
     static std::mutex m_worker_;
     static std::random_device rd_;
     static std::mt19937 mt_;
@@ -32,7 +31,6 @@ public:
 
     void stop();
     void start();
-    static void notify_worker();
 
 private:
     void unpack_ship();

@@ -83,14 +83,10 @@ void Window::draw_stats()
     mvwprintw(window_.get(), TOP_RAMP, 4, "Top  ramp: ");
     mvwprintw(window_.get(), MIDDLE_RAMP, 4, "Middle ramp: ");
     mvwprintw(window_.get(), DOWN_RAMP, 4, "Down ramp: ");
-    mvwprintw(window_.get(), SHIPS_IN_QUEUE, 4, "Ships in queue: ");
-    mvwprintw(window_.get(), FREE_WORKERS, 4, "Free workers: ");
     wattroff(window_.get(), COLOR_PAIR(WHITE));
     update_status(TOP_RAMP, "Free", GREEN);
     update_status(MIDDLE_RAMP, "Free", GREEN);
     update_status(DOWN_RAMP, "Free", GREEN);
-    update_status(SHIPS_IN_QUEUE, "0", GREEN);
-    update_status(FREE_WORKERS, "5", GREEN);
 }
 
 void Window::move_ship(std::pair<int, int> &previous_position, std::pair<int, int> &next_position, bool direction)
@@ -151,6 +147,54 @@ void Window::erase_worker(std::pair<int, int> &previous_position)
     std::lock_guard l_g_(mtx_);
     mvwprintw(window_.get(), previous_position.first, previous_position.second, " ");
     wrefresh(window_.get());
+}
+
+void Window::ramp_is_busy(const int index)
+{
+    switch (index)
+    {
+    case 0:
+    {
+        update_status(TOP_RAMP, "Busy", RED);
+        break;
+    }
+    case 1:
+    {
+        update_status(MIDDLE_RAMP, "Busy", RED);
+        break;
+    }
+    case 2:
+    {
+        update_status(DOWN_RAMP, "Busy", RED);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void Window::ramp_is_free(const int index)
+{
+    switch (index)
+    {
+    case 0:
+    {
+        update_status(TOP_RAMP, "Free", GREEN);
+        break;
+    }
+    case 1:
+    {
+        update_status(MIDDLE_RAMP, "Free", GREEN);
+        break;
+    }
+    case 2:
+    {
+        update_status(DOWN_RAMP, "Free", GREEN);
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 int Window::get_height() const

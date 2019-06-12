@@ -17,7 +17,11 @@ public:
     SeaPort &operator=(SeaPort &&) = delete;
     ~SeaPort() = default;
 
-    int get_free_ramp() const;
+    std::mutex mtx_unload_;
+    std::condition_variable cv_unload_;
+
+    int
+    get_free_ramp() const;
     std::shared_ptr<Ramp> &get_ramp(const int index);
     bool free_ramp();
     int worker_needed();
@@ -29,3 +33,6 @@ public:
     void worker_finished(const int index);
     void ship_exit(const int index);
 };
+
+extern std::condition_variable cv_workers_;
+extern std::condition_variable cv_ships_;
